@@ -44,7 +44,7 @@ public class UserRepository
     command.Parameters.AddWithValue("@email", newUser.user_email);
     command.Parameters.AddWithValue("@contact", newUser.user_contact);
     command.Parameters.AddWithValue("@address", newUser.user_address);
-    command.Parameters.AddWithValue("@role", newUser.user_role);
+    command.Parameters.AddWithValue("@role", newUser.user_role.ToString().ToLower());
 
     command.ExecuteNonQuery();
   }

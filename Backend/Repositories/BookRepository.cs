@@ -47,7 +47,6 @@ public class BookRepository
     command.ExecuteNonQuery();
   }
 
-
   public void UpdateBook(Guid id, BookDto updatedBook)
   {
     using var connection = _databaseHelper.GetConnection();

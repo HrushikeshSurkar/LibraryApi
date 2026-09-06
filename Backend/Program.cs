@@ -6,6 +6,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddTransient<DatabaseHelper>();
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<OrderRepository>();
+builder.Services.AddScoped<PaymentRepository>();
 
 var app = builder.Build();
 
