@@ -1,0 +1,34 @@
+<div class="books-container">
+  <table class="enterprise-table">
+    <caption>
+      Library Inventory
+    </caption>
+
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Author</th>
+        <th>Shelf</th>
+        <th>Total Copies</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (item of books(); track item.book_id) {
+        <tr>
+          <td>{{ item.book_title }}</td>
+          <td>{{ item.book_description }}</td>
+          <td>{{ item.book_author }}</td>
+          <td>{{ item.book_shelf }}</td>
+          <td>{{ item.book_total_copies }}</td>
+          <td class="action-cells">
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

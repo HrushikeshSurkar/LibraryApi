@@ -1,0 +1,24 @@
+.books-container {
+  padding: 20px;
+}
+
+.enterprise-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f6f8;
+    color: #333;
+  }
+
+  tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+}

@@ -13,7 +13,7 @@ public class BookRepository
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "select book_id, book_title from books where book_is_deleted = false;";
+    string sqlQuery = "select book_id, book_title, book_author, book_description, book_shelf, book_total_copies from books where book_is_deleted = false;";
     using var command = new NpgsqlCommand(sqlQuery, connection);
     using var reader = command.ExecuteReader();
 
@@ -23,8 +23,12 @@ public class BookRepository
     {
       booksList.Add(new
       {
-        Id = reader.GetGuid(0),
-        Title = reader.GetString(1)
+        book_id = reader.GetGuid(0),
+        book_title = reader.GetString(1),
+        book_author = reader.GetString(2),
+        book_description = reader.GetString(3),
+        book_shelf = reader.GetString(4),
+        book_total_copies = reader.GetInt16(5)
       });
     }
 
