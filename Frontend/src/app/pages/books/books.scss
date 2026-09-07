@@ -1,24 +1,192 @@
-.books-container {
-  padding: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+// 1. Component Reset & Global Scroll Fix
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f4f4f5;
+  padding: 32px;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
-.enterprise-table {
+// 2. Dashboard Layout
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #09090b;
+    margin: 0;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start; // THIS IS THE MAGIC FIX THAT STOPS THE FORM FROM STRETCHING
+  }
+
+  &__table-card,
+  &__form-card {
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+}
+
+// 3. Table Block
+.table {
   width: 100%;
   border-collapse: collapse;
+  text-align: left;
 
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
+  &__head {
+    background: #fafafa;
+    border-bottom: 1px solid #e4e4e7;
   }
 
-  th {
-    background-color: #f4f6f8;
-    color: #333;
+  &__header {
+    padding: 16px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #71717a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &--center {
+      text-align: center;
+    }
   }
 
-  tbody tr:hover {
-    background-color: #f9f9f9;
+  &__cell {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f4f4f5;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #3f3f46;
+
+    &--actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+  }
+
+  &__text-primary {
+    font-weight: 600;
+    color: #09090b;
+  }
+
+  &__text-secondary {
+    font-size: 13px;
+    color: #a1a1aa;
+    margin-top: 4px;
+  }
+
+  &__row:last-child .table__cell {
+    border-bottom: none;
+  }
+
+  &__row:hover:not(.table__head .table__row) {
+    background-color: #fafafa;
+  }
+}
+
+// 4. Form Block
+.form {
+  padding: 24px;
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    color: #09090b;
+  }
+
+  &__group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #52525b;
+  }
+
+  &__input {
+    padding: 12px 14px;
+    border: 1px solid #d4d4d8;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    color: #09090b;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+}
+
+// 5. Buttons
+.btn-submit {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #09090b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #27272a;
+  }
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #a1a1aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f4f4f5;
+  }
+
+  &--edit:hover {
+    color: #3b82f6;
+    background-color: #eff6ff;
+  }
+
+  &--delete:hover {
+    color: #ef4444;
+    background-color: #fef2f2;
   }
 }

@@ -5,7 +5,7 @@ import { BookService } from '../../services/book.service';
 
 @Component({
   selector: 'app-books',
-  imports: [],
+  imports: [], // TODO: Add ReactiveFormsModule
   templateUrl: './books.html',
   styleUrl: './books.scss',
 })
@@ -13,18 +13,26 @@ export class Books implements OnInit {
   private readonly bookService = inject(BookService);
 
   protected books = signal<Book[]>([]);
+
+  // TODO: Inject FormBuilder
+  // TODO: Create public bookForm group with required validations
+
   public ngOnInit() {
     this.initilizeComponent();
   }
 
   private initilizeComponent() {
-    const temp = this.bookService.getAllBooks();
-    temp
+    this.bookService
+      .getAllBooks()
       .pipe(
         tap((response) => {
           this.books.set(response.data || []);
         }),
       )
       .subscribe();
+  }
+
+  public saveForm() {
+    // TODO: console.log the form value
   }
 }

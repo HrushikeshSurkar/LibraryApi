@@ -1,34 +1,106 @@
-<div class="books-container">
-  <table class="enterprise-table">
-    <caption>
-      Library Inventory
-    </caption>
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1 class="dashboard__title">Library Inventory</h1>
+  </header>
 
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Author</th>
-        <th>Shelf</th>
-        <th>Total Copies</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <main class="dashboard__content">
+    <!-- Left: Data Table -->
+    <section class="dashboard__table-card">
+      <table class="table">
+        <thead class="table__head">
+          <tr class="table__row">
+            <th class="table__header">Title & Info</th>
+            <th class="table__header">Author</th>
+            <th class="table__header">Shelf</th>
+            <th class="table__header">Copies</th>
+            <th class="table__header table__header--center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table__body">
+          @for (item of books(); track item.book_id) {
+            <tr class="table__row">
+              <td class="table__cell">
+                <div class="table__text-primary">{{ item.book_title }}</div>
+                <div class="table__text-secondary">{{ item.book_description }}</div>
+              </td>
+              <td class="table__cell">{{ item.book_author }}</td>
+              <td class="table__cell">{{ item.book_shelf }}</td>
+              <td class="table__cell">{{ item.book_total_copies }}</td>
+              <td class="table__cell table__cell--actions">
+                <!-- SVG Edit Icon -->
+                <button class="btn-icon btn-icon--edit">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                  </svg>
+                </button>
+                <!-- SVG Delete Icon -->
+                <button class="btn-icon btn-icon--delete">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path
+                      d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                    ></path>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
 
-    <tbody>
-      @for (item of books(); track item.book_id) {
-        <tr>
-          <td>{{ item.book_title }}</td>
-          <td>{{ item.book_description }}</td>
-          <td>{{ item.book_author }}</td>
-          <td>{{ item.book_shelf }}</td>
-          <td>{{ item.book_total_copies }}</td>
-          <td class="action-cells">
-            <button class="btn-edit">Edit</button>
-            <button class="btn-delete">Delete</button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+    <!-- Right: Form -->
+    <section class="dashboard__form-card">
+      <form class="form">
+        <h2 class="form__title">Add Book</h2>
+
+        <div class="form__group">
+          <label class="form__label">Title</label>
+          <input class="form__input" type="text" placeholder="Book Title" />
+        </div>
+
+        <div class="form__group">
+          <label class="form__label">Author</label>
+          <input class="form__input" type="text" placeholder="Author Name" />
+        </div>
+
+        <div class="form__group">
+          <label class="form__label">Description</label>
+          <input class="form__input" type="text" placeholder="Brief summary" />
+        </div>
+
+        <div class="form__group">
+          <label class="form__label">Shelf</label>
+          <input class="form__input" type="text" placeholder="e.g. Rack A-3" />
+        </div>
+
+        <div class="form__group">
+          <label class="form__label">Total Copies</label>
+          <input class="form__input" type="number" placeholder="0" />
+        </div>
+
+        <button class="btn-submit" (click)="saveForm()" type="button">Save Book</button>
+      </form>
+    </section>
+  </main>
 </div>
