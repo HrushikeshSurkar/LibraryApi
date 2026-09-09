@@ -36,19 +36,34 @@ public class BookRepository
   }
 
 
-  public void AddBook(BookDto newBook)
+  public object AddBook(BookDto newBook)
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "insert into books(book_title,book_description,book_author,book_shelf,book_total_copies) values(@title, @description, @author, @shelf, @copies)";
-    using var command = new NpgsqlCommand(sqlQuery, connection);
+    string sqlQueryAdd = "insert into books(book_title,book_description,book_author,book_shelf,book_total_copies) values(@title, @description, @author, @shelf, @copies) returning *";
+    using var command = new NpgsqlCommand(sqlQueryAdd, connection);
     command.Parameters.AddWithValue("@title", newBook.book_title);
     command.Parameters.AddWithValue("@description", newBook.book_description);
     command.Parameters.AddWithValue("@author", newBook.book_author);
     command.Parameters.AddWithValue("@shelf", newBook.book_shelf);
     command.Parameters.AddWithValue("@copies", newBook.book_total_copies);
 
-    command.ExecuteNonQuery();
+    using var reader = command.ExecuteReader();
+
+    if (reader.Read())
+    {
+      return new
+      {
+        book_id = reader.GetGuid(0),
+        book_title = reader.GetString(1),
+        book_author = reader.GetString(2),
+        book_description = reader.GetString(3),
+        book_shelf = reader.GetString(4),
+        book_total_copies = reader.GetInt16(5)
+      };
+    }
+    return new { };
+
   }
 
   public void UpdateBook(Guid id, BookDto updatedBook)

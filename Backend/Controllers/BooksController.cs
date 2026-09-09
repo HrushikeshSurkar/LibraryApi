@@ -21,8 +21,8 @@ public class BooksController : ControllerBase
   [HttpPost]
   public IActionResult PostBooks([FromBody] BookDto newBook)
   {
-    _bookRepository.AddBook(newBook);
-    return Ok(new { Message = "Book Added Successfully" });
+    var bookList = _bookRepository.AddBook(newBook);
+    return Ok(new { Data = bookList, Message = "Book Added Successfully" });
   }
 
   [HttpPut("{id}")]

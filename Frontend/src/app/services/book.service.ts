@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Book, BooksResponse } from '../models/book.model';
+import { Book, BooksResponse, SingleBookResponse } from '../models/book.model';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
@@ -13,8 +13,8 @@ export class BookService {
     return this.httpClient.get<BooksResponse>(`${this.apiUrl}/books`);
   }
 
-  public addBook(payload: Book): Observable<BooksResponse> {
-    return this.httpClient.post<BooksResponse>(`${this.apiUrl}/books`, payload);
+  public addBook(payload: Book): Observable<SingleBookResponse> {
+    return this.httpClient.post<SingleBookResponse>(`${this.apiUrl}/books`, payload);
   }
 
   public updateBook(id: string, payload: Book): Observable<BooksResponse> {

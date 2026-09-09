@@ -1,5 +1,5 @@
 export interface Book {
-  book_id: string;
+  book_id?: string;
   book_title: string;
   book_description: string;
   book_author: string;
@@ -9,5 +9,10 @@ export interface Book {
 
 export interface BooksResponse {
   data?: Book[];
+  message: string;
+}
+
+export interface SingleBookResponse {
+  data?: Book;
   message: string;
 }

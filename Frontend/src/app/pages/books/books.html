@@ -71,35 +71,52 @@
 
     <!-- Right: Form -->
     <section class="dashboard__form-card">
-      <form class="form">
+      <form class="form" [formGroup]="bookForm">
         <h2 class="form__title">Add Book</h2>
 
         <div class="form__group">
           <label class="form__label">Title</label>
-          <input class="form__input" type="text" placeholder="Book Title" />
+          <input class="form__input" type="text" placeholder="Book Title" formControlName="title" />
         </div>
 
         <div class="form__group">
           <label class="form__label">Author</label>
-          <input class="form__input" type="text" placeholder="Author Name" />
+          <input
+            class="form__input"
+            type="text"
+            placeholder="Author Name"
+            formControlName="author"
+          />
         </div>
 
         <div class="form__group">
           <label class="form__label">Description</label>
-          <input class="form__input" type="text" placeholder="Brief summary" />
+          <input
+            class="form__input"
+            type="text"
+            placeholder="Brief summary"
+            formControlName="description"
+          />
         </div>
 
         <div class="form__group">
           <label class="form__label">Shelf</label>
-          <input class="form__input" type="text" placeholder="e.g. Rack A-3" />
+          <input
+            class="form__input"
+            type="text"
+            placeholder="e.g. Rack A-3"
+            formControlName="shelf"
+          />
         </div>
 
         <div class="form__group">
           <label class="form__label">Total Copies</label>
-          <input class="form__input" type="number" placeholder="0" />
+          <input class="form__input" type="number" placeholder="0" formControlName="copies" />
         </div>
 
-        <button class="btn-submit" (click)="saveForm()" type="button">Save Book</button>
+        <button class="btn-submit" [disabled]="bookForm.invalid" (click)="saveForm()" type="button">
+          Save Book
+        </button>
       </form>
     </section>
   </main>
