@@ -17,8 +17,8 @@ export class BookService {
     return this.httpClient.post<SingleBookResponse>(`${this.apiUrl}/books`, payload);
   }
 
-  public updateBook(id: string, payload: Book): Observable<BooksResponse> {
-    return this.httpClient.put<BooksResponse>(`${this.apiUrl}/books/${id}`, payload);
+  public updateBook(id: string, payload: Book): Observable<SingleBookResponse> {
+    return this.httpClient.put<SingleBookResponse>(`${this.apiUrl}/books/${id}`, payload);
   }
   public deleteBook(id: string): Observable<BooksResponse> {
     return this.httpClient.delete<BooksResponse>(`${this.apiUrl}/books/${id}`);

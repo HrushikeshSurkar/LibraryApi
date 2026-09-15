@@ -43,7 +43,8 @@
     border: 1px solid #e4e4e7;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    overflow: auto;
+    height: 85vh;
   }
 }
 
@@ -144,7 +145,6 @@
     }
   }
 }
-
 // 5. Buttons
 .btn-submit {
   width: 100%;
@@ -168,13 +168,60 @@
   }
 }
 
+.edit-mode {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-update {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #09090b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 49%;
+
+  &:hover {
+    background-color: #27272a;
+  }
+
+  &:disabled {
+    background-color: #aaaab1;
+  }
+}
+
+.btn-cancel {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background-color: transparent;
+  color: #3f3f46;
+  border: 1px solid #d4d4d8;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 49%;
+
+  &:hover {
+    background-color: #f4f4f5;
+    color: #09090b;
+  }
+}
+
 .btn-icon {
   background: transparent;
   border: none;
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
-  color: #a1a1aa;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,13 +231,26 @@
     background-color: #f4f4f5;
   }
 
+  &--edit {
+    color: #5898ff;
+    background-color: #eff6ff;
+  }
   &--edit:hover {
-    color: #3b82f6;
+    color: #0062ff;
     background-color: #eff6ff;
   }
 
-  &--delete:hover {
-    color: #ef4444;
+  &--delete {
+    color: #ff6767;
     background-color: #fef2f2;
+  }
+  &--delete:hover {
+    color: #ff0000;
+    background-color: #fef2f2;
+  }
+
+  &:disabled {
+    color: gray;
+    background-color: white;
   }
 }

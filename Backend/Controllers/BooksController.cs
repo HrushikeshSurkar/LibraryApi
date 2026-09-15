@@ -28,8 +28,8 @@ public class BooksController : ControllerBase
   [HttpPut("{id}")]
   public IActionResult PutBooks(Guid id, [FromBody] BookDto updatedBook)
   {
-    _bookRepository.UpdateBook(id, updatedBook);
-    return Ok(new { Message = "Book Updated Successfully", Success = true });
+    var bookList = _bookRepository.UpdateBook(id, updatedBook);
+    return Ok(new { Data = bookList, Message = "Book Updated Successfully", Success = true });
   }
 
   [HttpDelete("{id}")]

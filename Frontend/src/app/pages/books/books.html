@@ -9,6 +9,7 @@
       <table class="table">
         <thead class="table__head">
           <tr class="table__row">
+            <th class="table__header">SN</th>
             <th class="table__header">Title & Info</th>
             <th class="table__header">Author</th>
             <th class="table__header">Shelf</th>
@@ -19,6 +20,7 @@
         <tbody class="table__body">
           @for (item of books(); track item.book_id) {
             <tr class="table__row">
+              <td class="table__cell">{{ $index + 1 }}</td>
               <td class="table__cell">
                 <div class="table__text-primary">{{ item.book_title }}</div>
                 <div class="table__text-secondary">{{ item.book_description }}</div>
@@ -28,7 +30,11 @@
               <td class="table__cell">{{ item.book_total_copies }}</td>
               <td class="table__cell table__cell--actions">
                 <!-- Font Awesome Edit Icon -->
-                <button class="btn-icon btn-icon--edit">
+                <button
+                  class="btn-icon btn-icon--edit"
+                  [disabled]="bookForm.value.bookId !== null"
+                  (click)="onEditButtonClick(item)"
+                >
                   <i class="fa-solid fa-pen"></i>
                 </button>
                 <!-- Font Awesome Delete Icon -->
@@ -87,9 +93,28 @@
           <input class="form__input" type="number" placeholder="0" formControlName="copies" />
         </div>
 
-        <button class="btn-submit" [disabled]="bookForm.invalid" (click)="saveForm()" type="button">
-          Save Book
-        </button>
+        @if (isEditModeEnabled()) {
+          <div class="edit-mode">
+            <button
+              class="btn-update"
+              [disabled]="bookForm.invalid"
+              (click)="updateForm()"
+              type="button"
+            >
+              Update Book
+            </button>
+            <button class="btn-cancel" (click)="cancelForm()" type="button">Cancel</button>
+          </div>
+        } @else {
+          <button
+            class="btn-submit"
+            [disabled]="bookForm.invalid"
+            (click)="saveForm()"
+            type="button"
+          >
+            Save Book
+          </button>
+        }
       </form>
     </section>
   </main>

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { Book, BooksResponse, SingleBookResponse } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 
@@ -13,15 +13,21 @@ import { BookService } from '../../services/book.service';
 export class Books implements OnInit {
   private readonly bookService = inject(BookService);
 
+  protected books = signal<Book[]>([]);
+  protected isEditModeEnabled = signal<boolean>(false);
+
   protected bookForm = new FormGroup({
+    bookId: new FormControl<null | undefined | string>(null),
     title: new FormControl('', Validators.required),
     author: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     shelf: new FormControl('', Validators.required),
-    copies: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
+    copies: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(100),
+    ]),
   });
-
-  protected books = signal<Book[]>([]);
 
   public ngOnInit() {
     this.initilizeComponent();
@@ -83,5 +89,58 @@ export class Books implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  protected onEditButtonClick(book: Book) {
+    this.isEditModeEnabled.set(true);
+    this.bookForm.patchValue({
+      bookId: book.book_id,
+      title: book.book_title,
+      author: book.book_author,
+      description: book.book_description,
+      shelf: book.book_shelf,
+      copies: book.book_total_copies,
+    });
+  }
+
+  protected updateForm() {
+    if (this.bookForm?.value?.bookId) {
+      const bookFromValues = this.bookForm.value;
+      const bookPayload: Book = {
+        book_title: bookFromValues.title || '',
+        book_description: bookFromValues.description || '',
+        book_author: bookFromValues.author || '',
+        book_shelf: bookFromValues.shelf || '',
+        book_total_copies: bookFromValues.copies || 0,
+      };
+      this.bookService
+        .updateBook(this.bookForm.value.bookId, bookPayload)
+        .pipe(
+          tap((response: SingleBookResponse) => {
+            if (response.success === true) {
+              this.books.update((currentBooks) => {
+                return currentBooks.map((book) => {
+                  if (book.book_id === response.data!.book_id) {
+                    return response.data!;
+                  }
+                  return book;
+                });
+              });
+            }
+          }),
+          tap(() => {
+            this.resetForm();
+          }),
+          finalize(() => {
+            this.isEditModeEnabled.set(false);
+          }),
+        )
+        .subscribe();
+    }
+  }
+
+  protected cancelForm() {
+    this.isEditModeEnabled.set(false);
+    this.resetForm();
   }
 }

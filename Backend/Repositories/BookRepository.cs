@@ -66,11 +66,11 @@ public class BookRepository
 
   }
 
-  public void UpdateBook(Guid id, BookDto updatedBook)
+  public object UpdateBook(Guid id, BookDto updatedBook)
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "update books set book_title = @title, book_description = @description, book_author = @author, book_shelf = @shelf, book_total_copies = @copies where book_id = @id";
+    string sqlQuery = "update books set book_title = @title, book_description = @description, book_author = @author, book_shelf = @shelf, book_total_copies = @copies where book_id = @id returning *";
 
     using var command = new NpgsqlCommand(sqlQuery, connection);
 
@@ -81,7 +81,21 @@ public class BookRepository
     command.Parameters.AddWithValue("@copies", updatedBook.book_total_copies);
     command.Parameters.AddWithValue("@id", id);
 
-    command.ExecuteNonQuery();
+    using var reader = command.ExecuteReader();
+
+    if (reader.Read())
+    {
+      return new
+      {
+        book_id = reader.GetGuid(0),
+        book_title = reader.GetString(1),
+        book_author = reader.GetString(2),
+        book_description = reader.GetString(3),
+        book_shelf = reader.GetString(4),
+        book_total_copies = reader.GetInt16(5)
+      };
+    }
+    return new { };
   }
 
   public void DeleteBook(Guid id)
