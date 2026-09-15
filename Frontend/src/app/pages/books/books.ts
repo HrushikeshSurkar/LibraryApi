@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { tap } from 'rxjs';
-import { Book, SingleBookResponse } from '../../models/book.model';
+import { Book, BooksResponse, SingleBookResponse } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class Books implements OnInit {
     author: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     shelf: new FormControl('', Validators.required),
-    copies: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(100)]),
+    copies: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
   });
 
   protected books = signal<Book[]>([]);
@@ -52,7 +52,7 @@ export class Books implements OnInit {
       .addBook(bookPayload)
       .pipe(
         tap((response: SingleBookResponse) => {
-          if (response.data) {
+          if (response.success === true) {
             this.books.update((currentBooks) => {
               return [...currentBooks, response.data!];
             });
@@ -67,5 +67,21 @@ export class Books implements OnInit {
 
   protected resetForm() {
     this.bookForm.reset();
+  }
+
+  protected onDeleteClick(book_id: string) {
+    this.bookService
+      .deleteBook(book_id)
+      .pipe(
+        tap((response: BooksResponse) => {
+          if (response.success === true) {
+            const tempBookArray = this.books().filter((book) => {
+              return book.book_id !== book_id;
+            });
+            this.books.set(tempBookArray);
+          }
+        }),
+      )
+      .subscribe();
   }
 }

@@ -10,9 +10,11 @@ export interface Book {
 export interface BooksResponse {
   data?: Book[];
   message: string;
+  success?: boolean;
 }
 
 export interface SingleBookResponse {
   data?: Book;
   message: string;
+  success?: boolean;
 }

@@ -15,27 +15,27 @@ public class BooksController : ControllerBase
   public IActionResult GetBooks()
   {
     var bookList = _bookRepository.GetAllBooks();
-    return Ok(new { Data = bookList, Message = "Books Fetched Successfully" });
+    return Ok(new { Data = bookList, Message = "Books Fetched Successfully", Success = true });
   }
 
   [HttpPost]
   public IActionResult PostBooks([FromBody] BookDto newBook)
   {
     var bookList = _bookRepository.AddBook(newBook);
-    return Ok(new { Data = bookList, Message = "Book Added Successfully" });
+    return Ok(new { Data = bookList, Message = "Book Added Successfully", Success = true });
   }
 
   [HttpPut("{id}")]
   public IActionResult PutBooks(Guid id, [FromBody] BookDto updatedBook)
   {
     _bookRepository.UpdateBook(id, updatedBook);
-    return Ok(new { Message = "Book Updated Successfully" });
+    return Ok(new { Message = "Book Updated Successfully", Success = true });
   }
 
   [HttpDelete("{id}")]
   public IActionResult DeleteBooks(Guid id)
   {
     _bookRepository.DeleteBook(id);
-    return Ok(new { Message = "Book Deleted Successfully" });
+    return Ok(new { Message = "Book Deleted Successfully", Success = true });
   }
 }
