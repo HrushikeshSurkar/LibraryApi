@@ -1,0 +1,56 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo-badge">
+        <i class="fa-solid fa-book-bookmark"></i>
+      </div>
+      <h1>Welcome Back</h1>
+      <p>Sign in to your MyLibrary account</p>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-error" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input
+          id="loginEmail"
+          type="email"
+          formControlName="email"
+          placeholder="name@example.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="loginPassword">Password</label>
+          <a routerLink="/forgot-password" class="forgot-link">Forgot password?</a>
+        </div>
+        <input
+          id="loginPassword"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading()">
+        @if (isLoading()) {
+          <span>Signing in...</span>
+        } @else {
+          <span>Sign In</span>
+        }
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a routerLink="/register">Register now</a></p>
+    </div>
+  </div>
+</div>

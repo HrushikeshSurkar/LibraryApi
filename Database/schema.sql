@@ -8,7 +8,7 @@ create table users (
     user_id uuid primary key default gen_random_uuid(),
     user_is_deleted boolean default false,
     user_created_at timestamp default now(),
-    user_contact varchar(15) constraint contact_check check (length(user_contact) > 10),
+    user_contact varchar(15) constraint contact_check check (length(user_contact) >= 10),
     user_address varchar(100),
     user_email varchar(255) constraint email_check check (user_email LIKE '%@%.%'),
     user_name varchar(255),

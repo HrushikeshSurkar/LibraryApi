@@ -1,13 +1,15 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Book } from '../../models/book.model';
 import { BooksService } from './books.service';
+import { Navbar } from '../dashboard/components/navbar/navbar';
 
 @Component({
   selector: 'app-books',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Navbar],
   templateUrl: './books.html',
   styleUrl: './books.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Books implements OnInit {
   private readonly bookService = inject(BooksService);

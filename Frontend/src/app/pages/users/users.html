@@ -1,0 +1,112 @@
+<app-navbar></app-navbar>
+
+<div class="users-container">
+  <div class="users-grid">
+    <!-- Users List -->
+    <section class="users-card list-card">
+      <div class="card-header">
+        <h2>Library Members</h2>
+        <span class="badge">{{ users().length }} Registered</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of users(); track item.user_id || $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>
+                  <div class="user-info">
+                    <div class="avatar">{{ item.user_name.charAt(0).toUpperCase() }}</div>
+                    <div class="details">
+                      <span class="name">{{ item.user_name }}</span>
+                      <span class="address">{{ item.user_address }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ item.user_email }}</td>
+                <td>{{ item.user_contact }}</td>
+                <td>
+                  <span class="role-chip" [class.admin]="item.user_role === 'admin'" [class.librarian]="item.user_role === 'Librarian'">
+                    {{ item.user_role }}
+                  </span>
+                </td>
+                <td>
+                  <div class="actions">
+                    <button type="button" class="btn-icon edit" (click)="editUser(item)" aria-label="Edit user">
+                      <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button type="button" class="btn-icon delete" (click)="deleteUser(item.user_id!)" aria-label="Delete user">
+                      <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-state">No users registered yet.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- User Form -->
+    <section class="users-card form-card">
+      <div class="card-header">
+        <h2>{{ isEditMode() ? 'Edit User' : 'Register New User' }}</h2>
+      </div>
+
+      <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="user-form">
+        <div class="form-group">
+          <label for="userName">Full Name</label>
+          <input id="userName" type="text" formControlName="user_name" placeholder="John Doe" />
+        </div>
+
+        <div class="form-group">
+          <label for="userEmail">Email Address</label>
+          <input id="userEmail" type="email" formControlName="user_email" placeholder="john@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="userContact">Contact Phone</label>
+          <input id="userContact" type="text" formControlName="user_contact" placeholder="+91-9876543210" />
+        </div>
+
+        <div class="form-group">
+          <label for="userAddress">Address</label>
+          <input id="userAddress" type="text" formControlName="user_address" placeholder="123 Main St" />
+        </div>
+
+        <div class="form-group">
+          <label for="userRole">Role</label>
+          <select id="userRole" formControlName="user_role">
+            <option value="Reader">Reader</option>
+            <option value="Librarian">Librarian</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="userForm.invalid">
+            {{ isEditMode() ? 'Update Member' : 'Register Member' }}
+          </button>
+          @if (isEditMode()) {
+            <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+          }
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

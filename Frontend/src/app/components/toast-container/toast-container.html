@@ -1,0 +1,35 @@
+<aside class="toast-wrapper" aria-live="polite" aria-label="Notifications">
+  @for (toast of toasts(); track toast.id) {
+    <div
+      class="toast-card"
+      [class]="'toast-' + toast.type"
+      (mouseenter)="onMouseEnter(toast)"
+      (mouseleave)="onMouseLeave(toast)"
+    >
+      <div class="toast-icon">
+        @switch (toast.type) {
+          @case ('success') { <i class="fa-solid fa-circle-check"></i> }
+          @case ('error') { <i class="fa-solid fa-circle-xmark"></i> }
+          @case ('warning') { <i class="fa-solid fa-triangle-exclamation"></i> }
+          @default { <i class="fa-solid fa-circle-info"></i> }
+        }
+      </div>
+
+      <div class="toast-content">
+        @if (toast.title) {
+          <div class="toast-title">{{ toast.title }}</div>
+        }
+        <div class="toast-message">{{ toast.message }}</div>
+      </div>
+
+      <button
+        type="button"
+        class="toast-close"
+        (click)="closeToast(toast.id)"
+        aria-label="Close notification"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  }
+</aside>

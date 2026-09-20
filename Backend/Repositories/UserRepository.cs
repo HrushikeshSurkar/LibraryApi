@@ -13,7 +13,7 @@ public class UserRepository
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "select user_id, user_name, user_email from users where user_is_deleted = false;";
+    string sqlQuery = "select user_id, user_name, user_email, user_contact, user_address, user_role from users where user_is_deleted = false;";
     using var command = new NpgsqlCommand(sqlQuery, connection);
     using var reader = command.ExecuteReader();
 
@@ -24,10 +24,12 @@ public class UserRepository
       userList.Add(new
       {
         Id = reader.GetGuid(0),
-        Name = reader.GetString(1),
-        Email = reader.GetString(2)
+        Name = reader.IsDBNull(1) ? "" : reader.GetString(1),
+        Email = reader.IsDBNull(2) ? "" : reader.GetString(2),
+        Contact = reader.IsDBNull(3) ? "" : reader.GetString(3),
+        Address = reader.IsDBNull(4) ? "" : reader.GetString(4),
+        Role = reader.IsDBNull(5) ? "Reader" : reader.GetString(5)
       });
-
     }
     return userList;
   }
@@ -53,7 +55,7 @@ public class UserRepository
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "update users set user_name = @name ,user_email = @email ,user_contact = @contact,user_address = @address ,user_role = @role;";
+    string sqlQuery = "update users set user_name = @name, user_email = @email, user_contact = @contact, user_address = @address, user_role = @role where user_id = @id;";
 
     using var command = new NpgsqlCommand(sqlQuery, connection);
 
@@ -61,7 +63,7 @@ public class UserRepository
     command.Parameters.AddWithValue("@email", updatedUser.user_email);
     command.Parameters.AddWithValue("@contact", updatedUser.user_contact);
     command.Parameters.AddWithValue("@address", updatedUser.user_address);
-    command.Parameters.AddWithValue("@role", updatedUser.user_role);
+    command.Parameters.AddWithValue("@role", updatedUser.user_role.ToString().ToLower());
     command.Parameters.AddWithValue("@id", id);
 
     command.ExecuteNonQuery();
@@ -71,7 +73,7 @@ public class UserRepository
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "update users set user_is_deleted = true where user_id = @id ;";
+    string sqlQuery = "update users set user_is_deleted = true where user_id = @id;";
 
     using var command = new NpgsqlCommand(sqlQuery, connection);
     command.Parameters.AddWithValue("@id", id);

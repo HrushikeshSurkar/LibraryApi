@@ -1,0 +1,119 @@
+<app-navbar></app-navbar>
+
+<div class="orders-container">
+  <div class="orders-grid">
+    <!-- Orders Table -->
+    <section class="orders-card list-card">
+      <div class="card-header">
+        <h2>Book Borrowings & Orders</h2>
+        <span class="badge">{{ orders().length }} Active Borrowings</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User ID</th>
+              <th>Book ID</th>
+              <th>Due Date</th>
+              <th>Fine ($)</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of orders(); track item.order_id || $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td><code class="uuid-code">{{ item.order_user_id }}</code></td>
+                <td><code class="uuid-code">{{ item.order_book_id }}</code></td>
+                <td>{{ item.order_due_at | date:'mediumDate' }}</td>
+                <td>${{ item.order_fine_amount }}</td>
+                <td>
+                  <div class="status-tags">
+                    @if (item.order_has_fine) {
+                      <span class="chip fine">Fine Accrued</span>
+                    }
+                    @if (item.order_is_damaged) {
+                      <span class="chip damaged">Damaged</span>
+                    }
+                    @if (!item.order_has_fine && !item.order_is_damaged) {
+                      <span class="chip normal">Active</span>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <div class="actions">
+                    <button type="button" class="btn-icon edit" (click)="editOrder(item)" aria-label="Edit order">
+                      <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button type="button" class="btn-icon delete" (click)="deleteOrder(item.order_id!)" aria-label="Delete order">
+                      <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="empty-state">No borrowings active currently.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Order Form -->
+    <section class="orders-card form-card">
+      <div class="card-header">
+        <h2>{{ isEditMode() ? 'Edit Borrowing' : 'New Book Borrowing' }}</h2>
+      </div>
+
+      <form [formGroup]="orderForm" (ngSubmit)="saveOrder()" class="order-form">
+        <div class="form-group">
+          <label for="orderUserId">User ID (UUID)</label>
+          <input id="orderUserId" type="text" formControlName="order_user_id" placeholder="User UUID" />
+        </div>
+
+        <div class="form-group">
+          <label for="orderBookId">Book ID (UUID)</label>
+          <input id="orderBookId" type="text" formControlName="order_book_id" placeholder="Book UUID" />
+        </div>
+
+        <div class="form-group">
+          <label for="orderDueAt">Due Date</label>
+          <input id="orderDueAt" type="date" formControlName="order_due_at" />
+        </div>
+
+        <div class="form-group">
+          <label for="orderFineAmount">Fine Amount ($)</label>
+          <input id="orderFineAmount" type="number" step="0.01" formControlName="order_fine_amount" />
+        </div>
+
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" formControlName="order_has_fine" />
+            Has Outstanding Fine
+          </label>
+        </div>
+
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" formControlName="order_is_damaged" />
+            Book Is Damaged
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="orderForm.invalid">
+            {{ isEditMode() ? 'Update Order' : 'Create Order' }}
+          </button>
+          @if (isEditMode()) {
+            <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+          }
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

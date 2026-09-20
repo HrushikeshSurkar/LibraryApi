@@ -1,0 +1,132 @@
+<app-navbar></app-navbar>
+
+<div class="payments-container">
+  <div class="payments-grid">
+    <!-- Payments List -->
+    <section class="payments-card list-card">
+      <div class="card-header">
+        <h2>Transactions & Payments</h2>
+        <span class="badge">{{ payments().length }} Transactions</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Ref ID</th>
+              <th>Amount ($)</th>
+              <th>Method</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of payments(); track item.payment_id || $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td><code class="ref-code">{{ item.payment_reference_id }}</code></td>
+                <td class="amount">${{ item.payment_transaction_amount }}</td>
+                <td><span class="method-tag">{{ item.payment_method }}</span></td>
+                <td>{{ item.payment_type }}</td>
+                <td>
+                  <span class="status-chip" [class]="item.payment_status">
+                    {{ item.payment_status }}
+                  </span>
+                </td>
+                <td>
+                  <div class="actions">
+                    <button type="button" class="btn-icon edit" (click)="editPayment(item)" aria-label="Edit payment">
+                      <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    <button type="button" class="btn-icon delete" (click)="deletePayment(item.payment_id!)" aria-label="Delete payment">
+                      <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="empty-state">No payment transactions found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Payment Form -->
+    <section class="payments-card form-card">
+      <div class="card-header">
+        <h2>{{ isEditMode() ? 'Edit Transaction' : 'Record New Payment' }}</h2>
+      </div>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="savePayment()" class="payment-form">
+        <div class="form-group">
+          <label for="payAmount">Amount ($)</label>
+          <input id="payAmount" type="number" step="0.01" formControlName="payment_transaction_amount" placeholder="0.00" />
+        </div>
+
+        <div class="form-group">
+          <label for="payUserId">User ID (UUID)</label>
+          <input id="payUserId" type="text" formControlName="payment_user_id" placeholder="User UUID" />
+        </div>
+
+        <div class="form-group">
+          <label for="payOrderId">Order ID (Optional UUID)</label>
+          <input id="payOrderId" type="text" formControlName="payment_order_id" placeholder="Order UUID" />
+        </div>
+
+        <div class="form-group">
+          <label for="payRefId">Reference ID</label>
+          <input id="payRefId" type="text" formControlName="payment_reference_id" placeholder="TXN-123456" />
+        </div>
+
+        <div class="form-group">
+          <label for="payMethod">Payment Method</label>
+          <select id="payMethod" formControlName="payment_method">
+            <option value="card">Card</option>
+            <option value="upi">UPI</option>
+            <option value="cash">Cash</option>
+            <option value="net_banking">Net Banking</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payType">Payment Type</label>
+          <select id="payType" formControlName="payment_type">
+            <option value="late_fee">Late Fee</option>
+            <option value="damage_charge">Damage Charge</option>
+            <option value="lost_book_fee">Lost Book Fee</option>
+            <option value="membership_fee">Membership Fee</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payStatus">Status</label>
+          <select id="payStatus" formControlName="payment_status">
+            <option value="success">Success</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+            <option value="refunded">Refunded</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payNotes">Notes</label>
+          <input id="payNotes" type="text" formControlName="payment_notes" placeholder="Additional details..." />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" [disabled]="paymentForm.invalid">
+            {{ isEditMode() ? 'Update Payment' : 'Record Payment' }}
+          </button>
+          @if (isEditMode()) {
+            <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+          }
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
