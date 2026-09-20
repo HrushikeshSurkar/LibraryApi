@@ -1,1 +1,33 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <app-navbar />
+
+  <main class="dashboard__content">
+    <app-task-list
+      [tasks]="tasks()"
+      [completedCount]="completedCount()"
+      [progressPercentage]="progressPercentage()"
+      (addTask)="openAddForm()"
+      (editTask)="openEditForm($event)"
+      (toggleTask)="toggleTask($event.task, $event.completed)"
+      (deleteTask)="deleteTask($event)"
+    />
+
+    <app-progress-panel
+      [completedCount]="completedCount()"
+      [incompleteCount]="incompleteCount()"
+      [totalCount]="tasks().length"
+      [progressPercentage]="progressPercentage()"
+      [donutBackground]="donutBackground()"
+    />
+  </main>
+
+  @if (isFormOpen()) {
+    <app-task-form
+      [taskTitle]="taskTitle()"
+      [editingTaskId]="editingTaskId()"
+      (taskTitleChange)="updateTaskTitle($event)"
+      (close)="closeForm()"
+      (save)="saveTask()"
+    />
+  }
+</div>

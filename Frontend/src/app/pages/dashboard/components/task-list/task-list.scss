@@ -1,0 +1,312 @@
+@use '../../dashboard-variables' as *;
+
+:host {
+  min-height: 0;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.checklist {
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px;
+
+  background: $surface;
+
+  border: 1px solid $border;
+  border-radius: 16px;
+
+  &__header {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+  }
+
+  &__subtitle {
+    margin: 5px 0 0;
+
+    color: $text-muted;
+
+    font-size: 13px;
+  }
+
+  &__count {
+    display: flex;
+    align-items: baseline;
+
+    gap: 3px;
+
+    color: $text-muted;
+
+    font-size: 14px;
+
+    strong {
+      color: $text;
+
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+
+  // ========================================
+  // ADD TASK
+  // ========================================
+
+  &__actions {
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: flex-end;
+
+    margin-bottom: 14px;
+  }
+
+  &__add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    background: transparent;
+    color: $primary;
+
+    border: 1px solid $border;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      background: #f5f5ff;
+      border-color: #d8d8f5;
+    }
+
+    i {
+      font-size: 12px;
+    }
+  }
+
+  // ========================================
+  // PROGRESS
+  // ========================================
+
+  &__progress {
+    flex-shrink: 0;
+
+    height: 6px;
+
+    margin-bottom: 16px;
+
+    overflow: hidden;
+
+    background: #eef0f4;
+
+    border-radius: 999px;
+  }
+
+  &__progress-value {
+    height: 100%;
+
+    background: $primary;
+
+    border-radius: inherit;
+
+    transition: width 0.25s ease;
+  }
+
+  // ========================================
+  // TASK LIST
+  // ========================================
+
+  &__items {
+    min-height: 0;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding-right: 6px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #d9dce3;
+
+      border-radius: 999px;
+    }
+  }
+
+  &__item {
+    min-height: 56px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 8px 0 12px;
+
+    border-bottom: 1px solid $border;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: #fafaff;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--completed {
+      .checklist__text {
+        color: $text-muted;
+
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  &__checkbox {
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    margin: 0;
+
+    accent-color: $primary;
+
+    cursor: pointer;
+  }
+
+  &__text {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  // ========================================
+  // ACTIONS
+  // ========================================
+
+  &__item-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    opacity: 0;
+
+    transition: opacity 0.15s ease;
+  }
+
+  &__item:hover &__item-actions {
+    opacity: 1;
+  }
+
+  &__action {
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    background: transparent;
+    color: $text-muted;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+
+    &:hover {
+      background: #f0f1f7;
+      color: $text;
+    }
+
+    &--delete {
+      &:hover {
+        background: #fff0f0;
+        color: #d64545;
+      }
+    }
+  }
+
+  // ========================================
+  // EMPTY
+  // ========================================
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 180px;
+
+    color: $text-muted;
+
+    text-align: center;
+
+    span {
+      color: $text;
+
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 6px 0 0;
+
+      font-size: 13px;
+    }
+  }
+}

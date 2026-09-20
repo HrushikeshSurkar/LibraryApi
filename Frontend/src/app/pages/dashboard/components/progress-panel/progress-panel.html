@@ -1,0 +1,44 @@
+<section class="progress-panel">
+  <header class="progress-panel__header">
+    <div>
+      <span class="progress-panel__eyebrow">PROJECT PROGRESS</span>
+
+      <h2>Project Status</h2>
+
+      <p>Track your overall learning progress.</p>
+    </div>
+  </header>
+
+  <div class="progress-panel__content">
+    <!-- Donut -->
+    <div class="progress-panel__donut" [style.background]="donutBackground()">
+      <div class="progress-panel__donut-center">
+        <strong>{{ progressPercentage() }}%</strong>
+        <span>Complete</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="progress-panel__stats">
+      <div class="progress-panel__stat">
+        <span class="progress-panel__dot progress-panel__dot--completed"></span>
+
+        <div>
+          <strong>{{ completedCount() }}</strong>
+          <span>Completed</span>
+        </div>
+      </div>
+
+      <div class="progress-panel__stat">
+        <span class="progress-panel__dot progress-panel__dot--remaining"></span>
+
+        <div>
+          <strong>{{ incompleteCount() }}</strong>
+          <span>Remaining</span>
+        </div>
+      </div>
+
+      <div class="progress-panel__total">{{ totalCount() }} total tasks</div>
+    </div>
+  </div>
+</section>

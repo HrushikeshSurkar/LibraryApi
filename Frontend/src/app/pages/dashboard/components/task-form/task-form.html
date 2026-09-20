@@ -1,0 +1,52 @@
+<div class="task-form" (click)="closeForm()">
+  <div class="task-form__panel" (click)="$event.stopPropagation()">
+    <header class="task-form__header">
+      <div>
+        <h2 class="task-form__title">
+          {{ editingTaskId() ? 'Edit Task' : 'Add Task' }}
+        </h2>
+
+        <p class="task-form__subtitle">
+          {{ editingTaskId() ? 'Update your task' : 'Add a new task to your checklist' }}
+        </p>
+      </div>
+
+      <button class="task-form__close" type="button" (click)="closeForm()">×</button>
+    </header>
+
+    <div class="task-form__body">
+      <label class="task-form__label">
+        Task title
+
+        <input
+          class="task-form__input"
+          type="text"
+          placeholder="Enter task title"
+          [value]="taskTitle()"
+          (input)="updateTaskTitle($event)"
+          (keydown.enter)="saveTask()"
+          autofocus
+        />
+      </label>
+    </div>
+
+    <footer class="task-form__footer">
+      <button
+        class="task-form__button task-form__button--secondary"
+        type="button"
+        (click)="closeForm()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="task-form__button task-form__button--primary"
+        type="button"
+        [disabled]="!taskTitle().trim()"
+        (click)="saveTask()"
+      >
+        {{ editingTaskId() ? 'Update Task' : 'Add Task' }}
+      </button>
+    </footer>
+  </div>
+</div>

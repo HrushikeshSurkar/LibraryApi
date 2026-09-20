@@ -1,0 +1,56 @@
+@use './dashboard-variables' as *;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.dashboard {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: $background;
+  color: $text;
+
+  &__content {
+    flex: 1;
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 24px;
+
+    padding: 28px 40px;
+
+    overflow: hidden;
+  }
+}
+
+// ==========================================
+// RESPONSIVE
+// ==========================================
+
+@media (max-width: 800px) {
+  .dashboard {
+    .navbar {
+      padding: 0 20px;
+    }
+
+    &__content {
+      grid-template-columns: 1fr;
+
+      overflow-y: auto;
+
+      padding: 20px;
+    }
+  }
+
+  .progress {
+    min-height: 500px;
+  }
+}

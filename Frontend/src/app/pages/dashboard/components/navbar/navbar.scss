@@ -1,0 +1,66 @@
+@use '../../dashboard-variables' as *;
+.navbar {
+  flex: 0 0 64px;
+
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: $surface;
+  border-bottom: 1px solid $border;
+
+  &__logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  &__link {
+    position: relative;
+
+    padding: 22px 0;
+
+    color: $text-muted;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $text;
+    }
+
+    &--active {
+      color: $text;
+      font-weight: 600;
+
+      &::after {
+        content: '';
+
+        position: absolute;
+
+        left: 0;
+        right: 0;
+        bottom: -1px;
+
+        height: 2px;
+
+        background: $primary;
+
+        border-radius: 2px;
+      }
+    }
+  }
+}

@@ -4,10 +4,14 @@ builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddTransient<DatabaseHelper>();
+
+// Repository
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<PaymentRepository>();
+builder.Services.AddScoped<ProjectTaskRepository>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>

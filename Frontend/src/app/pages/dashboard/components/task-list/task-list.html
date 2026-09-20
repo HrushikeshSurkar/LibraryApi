@@ -1,0 +1,67 @@
+<section class="checklist">
+  <header class="checklist__header">
+    <div>
+      <h1 class="checklist__title">Learning Checklist</h1>
+
+      <p class="checklist__subtitle">Keep track of your progress</p>
+    </div>
+
+    <div class="checklist__count">
+      <strong>{{ completedCount() }}</strong>
+      <span> / {{ tasks().length }}</span>
+    </div>
+  </header>
+  <div class="checklist__actions">
+    <button class="checklist__add-button" type="button" (click)="onAddTask()">
+      <i class="fa-solid fa-plus"></i>
+      <span>Add Task</span>
+    </button>
+  </div>
+
+  <div class="checklist__progress">
+    <div class="checklist__progress-value" [style.width.%]="progressPercentage()"></div>
+  </div>
+
+  <div class="checklist__items">
+    @for (task of tasks(); track task.task_id) {
+      <div class="checklist__item" [class.checklist__item--completed]="task.task_completed">
+        <input
+          class="checklist__checkbox"
+          type="checkbox"
+          [checked]="task.task_completed"
+          (change)="onToggleTask(task, $any($event.target).checked)"
+        />
+
+        <span class="checklist__text">
+          {{ task.task_title }}
+        </span>
+
+        <div class="checklist__item-actions">
+          <button
+            class="checklist__action"
+            type="button"
+            title="Edit task"
+            (click)="onEditTask(task)"
+          >
+            <i class="fa-solid fa-pen"></i>
+          </button>
+
+          <button
+            class="checklist__action checklist__action--delete"
+            type="button"
+            title="Delete task"
+            (click)="onDeleteTask(task.task_id)"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    } @empty {
+      <div class="checklist__empty">
+        <span>No tasks yet</span>
+
+        <p>Add your first task to start tracking progress.</p>
+      </div>
+    }
+  </div>
+</section>
