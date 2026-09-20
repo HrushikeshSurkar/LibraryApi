@@ -1,3 +1,26 @@
+// Get Books Response
+
+export interface BooksResponse {
+  data?: BooksResponseWithPagination;
+  message: string;
+  success?: boolean;
+}
+
+export interface BooksResponseWithPagination {
+  pageNumber: number;
+  pageSize: number;
+  pageTotal: number;
+  booksArray: Book[];
+}
+
+// PUT, Delete, Post Response
+export interface SingleBookResponse {
+  data?: Book;
+  message: string;
+  success?: boolean;
+}
+
+// Common
 export interface Book {
   book_id?: string;
   book_title: string;
@@ -5,16 +28,4 @@ export interface Book {
   book_author: string;
   book_shelf: string;
   book_total_copies: number;
-}
-
-export interface BooksResponse {
-  data?: Book[];
-  message: string;
-  success?: boolean;
-}
-
-export interface SingleBookResponse {
-  data?: Book;
-  message: string;
-  success?: boolean;
 }

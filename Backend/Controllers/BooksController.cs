@@ -12,9 +12,9 @@ public class BooksController : ControllerBase
   }
 
   [HttpGet]
-  public IActionResult GetBooks()
+  public IActionResult GetAllBooks(int pageNumber = 1, int pageSize = 5)
   {
-    var bookList = _bookRepository.GetAllBooks();
+    var bookList = _bookRepository.GetAllBooks(pageNumber, pageSize);
     return Ok(new { Data = bookList, Message = "Books Fetched Successfully", Success = true });
   }
 

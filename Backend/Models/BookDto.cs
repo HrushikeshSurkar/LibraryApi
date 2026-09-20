@@ -1,5 +1,6 @@
 public class BookDto
 {
+  public Guid book_id { get; set; }
   public required string book_title { get; set; }
   public required string book_description { get; set; }
   public required string book_author { get; set; }

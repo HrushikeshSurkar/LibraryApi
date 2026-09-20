@@ -9,19 +9,25 @@ public class BookRepository
     _databaseHelper = databaseHelper;
   }
 
-  public List<object> GetAllBooks()
+  public PaginatedBookResponseDto GetAllBooks(int pageNumber, int pageSize)
   {
     using var connection = _databaseHelper.GetConnection();
 
-    string sqlQuery = "select book_id, book_title, book_author, book_description, book_shelf, book_total_copies from books where book_is_deleted = false;";
+    int offset = (pageNumber - 1) * pageSize;
+
+    string sqlQuery = "select book_id, book_title, book_author, book_description, book_shelf, book_total_copies from books where book_is_deleted = false limit @limit offset @offset;";
     using var command = new NpgsqlCommand(sqlQuery, connection);
+    command.Parameters.AddWithValue("@limit", pageSize);
+    command.Parameters.AddWithValue("@offset", offset);
+
     using var reader = command.ExecuteReader();
 
-    List<object> booksList = new List<object>();
+
+    List<BookDto> booksList = new List<BookDto>();
 
     while (reader.Read())
     {
-      booksList.Add(new
+      booksList.Add(new BookDto
       {
         book_id = reader.GetGuid(0),
         book_title = reader.GetString(1),
@@ -31,8 +37,20 @@ public class BookRepository
         book_total_copies = reader.GetInt16(5)
       });
     }
+    reader.Close();
 
-    return booksList;
+    string getBooksCount = "select count(*) from books where book_is_deleted = false;";
+
+    using var command2 = new NpgsqlCommand(getBooksCount, connection);
+    int totalCount = Convert.ToInt32(command2.ExecuteScalar());
+
+    return new PaginatedBookResponseDto
+    {
+      pageNumber = pageNumber,
+      pageSize = pageSize,
+      pageTotal = totalCount,
+      booksArray = booksList
+    };
   }
 
 
